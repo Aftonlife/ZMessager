@@ -1,0 +1,2 @@
+include ':app', ':lang', ':factory', ':common', ':face-res'
+rootProject.name='zTalker'
