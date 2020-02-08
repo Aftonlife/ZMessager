@@ -10,12 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * author Administrator
  * date 2020/2/8
  */
 public abstract class BaseFragment extends Fragment {
     protected View mRoot;
+    protected Unbinder mRootUnbinder;
 
     /*标示是否第一次初始化数据*/
     protected boolean mIsFirstInitData = true;
@@ -76,6 +80,7 @@ public abstract class BaseFragment extends Fragment {
      * 初始化控件
      */
     protected void initWidget(View root) {
+        mRootUnbinder = ButterKnife.bind(this, root);
     }
 
     /**
@@ -90,8 +95,10 @@ public abstract class BaseFragment extends Fragment {
     protected void onFirstInit() {
 
     }
+
     /**
      * 返回按键触发时调用
+     *
      * @return 返回True代表我已处理返回逻辑，Activity不用自己finish。
      * 返回False代表我没有处理逻辑，Activity自己走自己的逻辑
      */

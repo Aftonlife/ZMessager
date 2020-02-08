@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+
 /**
  * author Administrator
  * date 2020/2/8
@@ -64,6 +66,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 初始化控件
      */
     protected void initWidget() {
+        ButterKnife.bind(this);
     }
 
     /**

@@ -6,16 +6,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.zx.app.common.app.BaseActivity;
 import com.zx.app.ztalker.activities.AccountActivity;
 
-public class MainActivity extends AppCompatActivity {
+import butterknife.OnClick;
+
+public class MainActivity extends BaseActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    protected int getContentLayoutId() {
+        return R.layout.activity_main;
     }
 
+    @OnClick(R.id.tv_test)
     public void textClick(View view) {
         startActivity(new Intent(MainActivity.this, AccountActivity.class));
     }
