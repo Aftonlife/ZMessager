@@ -48,4 +48,9 @@
         <item name="android:textColor">?attr/toolbarTitleColor</item>
     </style>
 
+    <style name="TextContentNormal">
+        <item name="android:textSize">@dimen/font_14</item>
+        <item name="android:textColor">@color/text_nav</item>
+        <item name="android:gravity">center</item>
+    </style>
 </resources>
