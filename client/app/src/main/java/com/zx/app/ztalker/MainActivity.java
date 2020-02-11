@@ -83,8 +83,8 @@ public class MainActivity extends BaseActivity implements
         mNavHelper = new NavHelper(this, getSupportFragmentManager(), R.id.fl_container, this);
         /*添加Fragment,加类*/
         mNavHelper.add(R.id.action_home, new NavHelper.Tab<>(ActiveFragment.class, R.string.title_home))
-                .add(R.id.action_group, new NavHelper.Tab<>(ActiveFragment.class, R.string.title_group))
-                .add(R.id.action_contact, new NavHelper.Tab<>(ActiveFragment.class, R.string.title_contact));
+                .add(R.id.action_group, new NavHelper.Tab<>(GroupFragment.class, R.string.title_group))
+                .add(R.id.action_contact, new NavHelper.Tab<>(ContactFragment.class, R.string.title_contact));
     }
 
     @Override

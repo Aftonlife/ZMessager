@@ -220,6 +220,16 @@ public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAd
     }
 
     /**
+     * 设置适配器的监听
+     *
+     * @param listener
+     */
+    public void setListener(AdapterListener<T> listener) {
+        this.mListener = listener;
+    }
+
+
+    /**
      * 自定义监听，主要是点击监听
      *
      * @param <T>
@@ -268,5 +278,20 @@ public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAd
         }
     }
 
+    /**
+     * 对回调接口的一次实现，后续设置监听可以只实现用到的回调
+     *
+     * @param <T>
+     */
+    public static abstract class AdapterListenerImpl<T> implements AdapterListener<T> {
+        @Override
+        public void onItemClick(ViewHolder<T> holder, T data) {
 
+        }
+
+        @Override
+        public void onItemLongClick(ViewHolder<T> holder, T data) {
+
+        }
+    }
 }

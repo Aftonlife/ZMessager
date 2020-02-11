@@ -12,4 +12,34 @@
 
     <!--名字字体的大小-->
     <dimen name="fontNameSize">15sp</dimen>
+
+    <!--dp-->
+    <dimen name="len_1">1dp</dimen>
+    <dimen name="len_2">2dp</dimen>
+    <dimen name="len_3">3dp</dimen>
+    <dimen name="len_4">4dp</dimen>
+    <dimen name="len_5">5dp</dimen>
+    <dimen name="len_6">6dp</dimen>
+    <dimen name="len_8">8dp</dimen>
+    <dimen name="len_10">10dp</dimen>
+    <dimen name="len_15">15dp</dimen>
+    <dimen name="len_20">20dp</dimen>
+    <dimen name="len_25">25dp</dimen>
+    <dimen name="len_30">30dp</dimen>
+    <dimen name="len_35">35dp</dimen>
+    <dimen name="len_40">40dp</dimen>
+    <dimen name="len_44">44dp</dimen>
+    <dimen name="len_48">48dp</dimen>
+    <dimen name="len_52">52dp</dimen>
+    <dimen name="len_56">56dp</dimen>
+    <dimen name="len_60">60dp</dimen>
+    <dimen name="len_64">64dp</dimen>
+    <dimen name="len_68">68dp</dimen>
+    <dimen name="len_72">72dp</dimen>
+    <dimen name="len_76">76dp</dimen>
+    <dimen name="len_80">80dp</dimen>
+    <dimen name="len_84">84dp</dimen>
+    <dimen name="len_88">88dp</dimen>
+    <dimen name="len_92">92dp</dimen>
+    <dimen name="len_96">96dp</dimen>
 </resources>
