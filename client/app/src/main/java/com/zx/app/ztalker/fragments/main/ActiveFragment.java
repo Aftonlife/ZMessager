@@ -1,21 +1,18 @@
 package com.zx.app.ztalker.fragments.main;
 
 
-import android.os.Bundle;
-
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.zx.app.common.app.BaseFragment;
+import com.zx.app.common.widget.GalleryView;
 import com.zx.app.ztalker.R;
+
+import butterknife.BindView;
 
 /**
  *
  */
 public class ActiveFragment extends BaseFragment {
-
+    @BindView(R.id.galleryView)
+    GalleryView mGalley;
 
     public ActiveFragment() {
         // Required empty public constructor
@@ -26,4 +23,14 @@ public class ActiveFragment extends BaseFragment {
         return R.layout.fragment_active;
     }
 
+    @Override
+    protected void initData() {
+        super.initData();
+        mGalley.setup(getLoaderManager(), new GalleryView.SelectedChangeListener() {
+            @Override
+            public void onSelectedChange(int count) {
+
+            }
+        });
+    }
 }

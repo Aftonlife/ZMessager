@@ -1,15 +1,10 @@
 package com.zx.app.common.widget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.database.Cursor;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.CheckBox;
@@ -29,34 +24,37 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.zx.app.common.R;
 import com.zx.app.common.widget.recycler.RecyclerAdapter;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * TODO: document your custom view class.
  */
-public class GalleyView extends RecyclerView {
+public class GalleryView extends RecyclerView {
     private static final int LOADER_ID = 0x0100;
     private static final int MAX_IMAGE_COUNT = 3;//最大选中数量
     private static final int MIN_IMAGE_FILE_SIZE = 10 * 1024; // 最小的图片大小
 
-    private Adapter mAdapter;
+    private Adapter mAdapter = new Adapter();
     private SelectedChangeListener mListener;
     private List<Image> mSelectedImages = new LinkedList<>();//LinkedList 增加删除Item时性能比Array好
     private LoaderCallback mLoaderCallback = new LoaderCallback();
 
 
-    public GalleyView(Context context) {
+    public GalleryView(Context context) {
         super(context);
         init(null, 0);
     }
 
-    public GalleyView(Context context, AttributeSet attrs) {
+    public GalleryView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs, 0);
     }
 
-    public GalleyView(Context context, AttributeSet attrs, int defStyle) {
+    public GalleryView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs, defStyle);
     }
@@ -86,12 +84,22 @@ public class GalleyView extends RecyclerView {
         return LOADER_ID;
     }
 
+    public String[] getAllSelectedPath() {
+        String[] paths = new String[mSelectedImages.size()];
+        int index = 0;
+        for (Image image : mSelectedImages) {
+            paths[index++] = image.path;
+        }
+        return paths;
+    }
+
     /**
      * Cell点击的具体逻辑
      *
      * @param image
      * @return True，代表我进行了数据更改，你需要刷新；反之不刷新
      */
+    @SuppressLint("StringFormatMatches")
     private boolean onItemSelectClick(Image image) {
         boolean notifyChange = false;
         if (mSelectedImages.contains(image)) {
@@ -100,7 +108,9 @@ public class GalleyView extends RecyclerView {
             notifyChange = true;
         } else {
             if (mSelectedImages.size() >= MAX_IMAGE_COUNT) {
-                Toast.makeText(getContext(), "最多不能超过" + MAX_IMAGE_COUNT + "张", Toast.LENGTH_SHORT).show();
+                String str = getResources().getString(R.string.label_gallery_select_max_size);
+                str = String.format(str, MAX_IMAGE_COUNT);
+                Toast.makeText(getContext(), str, Toast.LENGTH_SHORT).show();
             } else {
                 mSelectedImages.add(image);
                 image.isSelect = true;
@@ -155,7 +165,7 @@ public class GalleyView extends RecyclerView {
                         IMAGE_PROJECTION,
                         null,
                         null,
-                        IMAGE_PROJECTION[2] + "DESC");//倒序查询
+                        IMAGE_PROJECTION[2] + " DESC");//倒序查询
             }
             return null;
         }
@@ -163,11 +173,43 @@ public class GalleyView extends RecyclerView {
         @Override
         public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
             /*Loader加载完成时*/
+            List<Image> images = new ArrayList<>();
+            if (null != data) {
+                int count = data.getCount();
+                if (count > 0) {
+                    data.moveToFirst();
+                    // 得到对应的列的Index坐标
+                    int idIndex = data.getColumnIndexOrThrow(IMAGE_PROJECTION[0]);
+                    int pathIndex = data.getColumnIndexOrThrow(IMAGE_PROJECTION[1]);
+                    int dateIndex = data.getColumnIndexOrThrow(IMAGE_PROJECTION[2]);
+                    do {
+                        int id = data.getInt(idIndex);
+                        String path = data.getString(pathIndex);
+                        Long date = data.getLong(dateIndex);
+
+                        /*判断文件是否存在和符合要求*/
+                        File file = new File(path);
+                        if (null == file || file.length() < MIN_IMAGE_FILE_SIZE) {
+                            continue;
+                        }
+                        /*添加Image*/
+                        Image image = new Image();
+                        image.id = id;
+                        image.path = path;
+                        image.date = date;
+                        images.add(image);
+
+                    } while (data.moveToNext());
+                }
+                updateSource(images);
+            }
+
         }
 
         @Override
         public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-            /*Loader重置或者销毁*/
+            /*Loader重置或者销毁,进行清空界面*/
+            updateSource(null);
         }
     }
 
@@ -211,7 +253,7 @@ public class GalleyView extends RecyclerView {
 
         @Override
         protected ViewHolder<Image> onCreateViewHolder(View root, int viewType) {
-            return new GalleyView.ViewHolder(root);
+            return new GalleryView.ViewHolder(root);
         }
     }
 
@@ -240,7 +282,7 @@ public class GalleyView extends RecyclerView {
                     .centerCrop()
                     .into(mPic);
             mMask.setVisibility(data.isSelect ? VISIBLE : GONE);
-            mSelected.setVisibility(data.isSelect ? VISIBLE : GONE);
+            mSelected.setVisibility(VISIBLE);
             mSelected.setChecked(data.isSelect);
         }
     }

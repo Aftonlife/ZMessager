@@ -25,9 +25,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_margin="@dimen/len_2"
-        android:background="@drawable/sel_cb_circle"
-        android:button="@null"
+        android:button="@drawable/sel_cb_circle"
         android:enabled="false"
+        android:clickable="false"
         android:visibility="gone"
-        tools:visibility="visible" />
+        tools:visibility="visible"
+        android:buttonTint="@color/cb_gallery"/>
 </com.zx.app.common.widget.SquareLayout>

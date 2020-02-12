@@ -122,4 +122,9 @@ public class MainActivity extends BaseActivity implements
                 .setDuration(500)
                 .start();
     }
+
+    @OnClick(R.id.fab_action)
+    public void actionClick(View view) {
+        AccountActivity.show(this);
+    }
 }
