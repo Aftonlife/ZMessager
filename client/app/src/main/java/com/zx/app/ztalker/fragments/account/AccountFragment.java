@@ -12,6 +12,7 @@ import com.zx.app.common.app.Application;
 import com.zx.app.common.app.BaseFragment;
 import com.zx.app.common.widget.PortraitView;
 import com.zx.app.ztalker.R;
+import com.zx.app.ztalker.fragments.assist.PermissionsFragment;
 import com.zx.app.ztalker.fragments.media.GalleryFragment;
 
 import java.io.File;
@@ -42,24 +43,26 @@ public class AccountFragment extends BaseFragment {
 
     @OnClick(R.id.pv_portrait)
     public void portraitClick() {
-        new GalleryFragment()
-                .setListener(path -> {
-                    UCrop.Options options = new UCrop.Options();
-                    /*图片格式*/
-                    options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
-                    /*图片精度*/
-                    options.setCompressionQuality(96);
+        if(PermissionsFragment.haveAll(getContext(),getChildFragmentManager())){
+            new GalleryFragment()
+                    .setListener(path -> {
+                        UCrop.Options options = new UCrop.Options();
+                        /*图片格式*/
+                        options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
+                        /*图片精度*/
+                        options.setCompressionQuality(96);
 
-                    /*得到头像缓存临时地址*/
-                    File dPath = Application.getPortraitTmpFile();
-                    /*发起裁剪*/
-                    UCrop.of(Uri.fromFile(new File(path)), Uri.fromFile(dPath))
-                            .withAspectRatio(1, 1)//宽高比
-                            .withMaxResultSize(520, 520)//最大尺寸
-                            .withOptions(options)//相关参数
-                            .start(getActivity());
-                })
-                .show(getChildFragmentManager(), AccountFragment.class.getName());
+                        /*得到头像缓存临时地址*/
+                        File dPath = Application.getPortraitTmpFile();
+                        /*发起裁剪*/
+                        UCrop.of(Uri.fromFile(new File(path)), Uri.fromFile(dPath))
+                                .withAspectRatio(1, 1)//宽高比
+                                .withMaxResultSize(520, 520)//最大尺寸
+                                .withOptions(options)//相关参数
+                                .start(getActivity());
+                    })
+                    .show(getChildFragmentManager(), AccountFragment.class.getName());
+        }
     }
 
     @Override

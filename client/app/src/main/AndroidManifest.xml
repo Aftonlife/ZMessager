@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zx.app.ztalker">
-
     <!-- 网络相关的权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!-- 读取存储权限 -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <!-- 写存储权限，OSS需要 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- 录音权限 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 读取存储权限 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 写存储权限，OSS需要 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 录音权限 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
@@ -21,17 +17,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".LaunchActivity"
+            android:theme="@style/AppTheme.TransStatusBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.AccountActivity"
             android:theme="@style/AppTheme.Main" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.Main">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"

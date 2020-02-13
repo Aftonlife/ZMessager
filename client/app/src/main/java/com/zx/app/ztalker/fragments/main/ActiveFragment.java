@@ -26,11 +26,5 @@ public class ActiveFragment extends BaseFragment {
     @Override
     protected void initData() {
         super.initData();
-        mGalley.setup(getLoaderManager(), new GalleryView.SelectedChangeListener() {
-            @Override
-            public void onSelectedChange(int count) {
-
-            }
-        });
     }
 }

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -49,6 +50,10 @@ public class MainActivity extends BaseActivity implements
 
 
     private NavHelper<Integer> mNavHelper;
+
+    public static void show(Context context) {
+        context.startActivity(new Intent(context, MainActivity.class));
+    }
 
     @Override
     protected int getContentLayoutId() {
