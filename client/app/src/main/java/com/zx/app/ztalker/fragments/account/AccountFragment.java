@@ -3,6 +3,7 @@ package com.zx.app.ztalker.fragments.account;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -11,6 +12,8 @@ import com.yalantis.ucrop.UCrop;
 import com.zx.app.common.app.Application;
 import com.zx.app.common.app.BaseFragment;
 import com.zx.app.common.widget.PortraitView;
+import com.zx.app.factory.Factory;
+import com.zx.app.factory.net.UploadHelper;
 import com.zx.app.ztalker.R;
 import com.zx.app.ztalker.fragments.assist.PermissionsFragment;
 import com.zx.app.ztalker.fragments.media.GalleryFragment;
@@ -28,6 +31,8 @@ import static android.app.Activity.RESULT_OK;
  */
 public class AccountFragment extends BaseFragment {
 
+    private static final String TAG = AccountFragment.class.getName();
+
     @BindView(R.id.pv_portrait)
     PortraitView mPortrait;
 
@@ -43,7 +48,7 @@ public class AccountFragment extends BaseFragment {
 
     @OnClick(R.id.pv_portrait)
     public void portraitClick() {
-        if(PermissionsFragment.haveAll(getContext(),getChildFragmentManager())){
+        if (PermissionsFragment.haveAll(getContext(), getChildFragmentManager())) {
             new GalleryFragment()
                     .setListener(path -> {
                         UCrop.Options options = new UCrop.Options();
@@ -69,7 +74,7 @@ public class AccountFragment extends BaseFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             final Uri resultUri = UCrop.getOutput(data);
-            if(null!=resultUri){
+            if (null != resultUri) {
                 loadPortrait(resultUri);
             }
         } else if (resultCode == UCrop.RESULT_ERROR) {
@@ -87,5 +92,11 @@ public class AccountFragment extends BaseFragment {
                 .load(portrait)
                 .centerCrop()
                 .into(mPortrait);
+        String localPath = portrait.getPath();
+        Log.e(TAG, "localPath=" + localPath);
+        Factory.runOnAsync(() -> {
+            String netPath = UploadHelper.uploadPortrait(localPath);
+            Log.e(TAG, "netPath=" + netPath);
+        });
     }
 }
