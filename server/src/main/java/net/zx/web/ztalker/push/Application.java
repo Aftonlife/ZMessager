@@ -1,6 +1,8 @@
 package net.zx.web.ztalker.push;
 
+import net.zx.web.ztalker.push.provider.GsonProvider;
 import net.zx.web.ztalker.push.service.AccountService;
+import net.zx.web.ztalker.push.utils.Hib;
 import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJsonProvider;
 import org.glassfish.jersey.jaxb.internal.XmlJaxbElementProvider;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
@@ -24,15 +26,15 @@ public class Application extends ResourceConfig {
 //        register(AuthRequestFilter.class);
 
         // 注册Json解析器
-         register(JacksonJsonProvider.class);
+//         register(JacksonJsonProvider.class);
         // 替换解析器为Gson
-//        register(GsonProvider.class);
+        register(GsonProvider.class);
 
         // 注册日志打印输出
         register(Logger.class);
 
         // 启动时直接初始化Hibernate数据库
-//        Hib.setup();
+        Hib.setup();
 
         // 输出启动成功日志
         LOGGER.log(Level.INFO, "Application setup succeed!");
