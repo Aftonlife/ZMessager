@@ -1,5 +1,6 @@
 package net.zx.web.ztalker.push;
 
+import net.zx.web.ztalker.push.provider.AuthRequestFilter;
 import net.zx.web.ztalker.push.provider.GsonProvider;
 import net.zx.web.ztalker.push.service.AccountService;
 import net.zx.web.ztalker.push.utils.Hib;
@@ -23,7 +24,7 @@ public class Application extends ResourceConfig {
         packages(AccountService.class.getPackage().getName());
 
         // 注册我们的全局请求拦截器
-//        register(AuthRequestFilter.class);
+        register(AuthRequestFilter.class);
 
         // 注册Json解析器
 //         register(JacksonJsonProvider.class);
