@@ -84,6 +84,6 @@ public class Application extends android.app.Application {
      * @param msgId 只能时字符串的资源
      */
     public static void showToast(@StringRes int msgId) {
-        instance.getString(msgId);
+       showToast(instance.getString(msgId));
     }
 }

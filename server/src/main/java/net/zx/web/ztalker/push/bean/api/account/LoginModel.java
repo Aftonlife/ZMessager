@@ -40,6 +40,7 @@ public class LoginModel {
     public void setPassword(String password) {
         this.password = password;
     }
+
     public static boolean check(LoginModel model){
         return null!=model
                 && !Strings.isNullOrEmpty(model.getAccount())

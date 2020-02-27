@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Property;
 
 import com.zx.app.common.app.BaseActivity;
+import com.zx.app.ztalker.activities.AccountActivity;
 import com.zx.app.ztalker.fragments.assist.PermissionsFragment;
 
 import pub.devrel.easypermissions.EasyPermissions;
@@ -34,7 +35,7 @@ public class LaunchActivity extends BaseActivity {
      */
     private void reallySkip() {
         if (PermissionsFragment.haveAll(this, getSupportFragmentManager())) {
-            MainActivity.show(this);
+            AccountActivity.show(this);
             finish();
         }
     }

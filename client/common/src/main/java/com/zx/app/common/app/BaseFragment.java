@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.zx.app.factory.presenter.BaseContract;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -105,4 +107,5 @@ public abstract class BaseFragment extends Fragment {
     public boolean onBackPressed() {
         return false;
     }
+
 }

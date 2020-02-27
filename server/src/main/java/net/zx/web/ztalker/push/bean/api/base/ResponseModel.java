@@ -14,7 +14,7 @@ public class ResponseModel<M> implements Serializable {
     /*成功*/
     public static final int SUCCEED = 1;
     /*未知错误*/
-    public static final int ERROR_UNKNOW = 1;
+    public static final int ERROR_UNKNOWN = 0;
 
     /*找不到用户信息*/
     public static final int ERROR_NOT_FOUND_USER = 4041;
@@ -27,8 +27,8 @@ public class ResponseModel<M> implements Serializable {
     public static final int ERROR_CREATE_USER = 3001;
     /*创建群失败*/
     public static final int ERROR_CREATE_GROUP = 3002;
-    /*创建群成员失败*/
-    public static final int ERROR_CREATE_GROUP_MEMBER = 3003;
+    /*创建群消息失败*/
+    public static final int ERROR_CREATE_MESSAGE = 3003;
 
     /*参数错误*/
     public static final int ERROR_PARAMETERS = 4001;

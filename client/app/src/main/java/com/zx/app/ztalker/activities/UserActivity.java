@@ -1,20 +1,23 @@
-package com.zx.app.ztalker.fragments.account;
+package com.zx.app.ztalker.activities;
+
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.yalantis.ucrop.UCrop;
 import com.zx.app.common.app.Application;
-import com.zx.app.common.app.BaseFragment;
+import com.zx.app.common.app.BaseActivity;
 import com.zx.app.common.widget.PortraitView;
 import com.zx.app.factory.Factory;
 import com.zx.app.factory.net.UploadHelper;
 import com.zx.app.ztalker.R;
+import com.zx.app.ztalker.fragments.account.AccountTrigger;
+import com.zx.app.ztalker.fragments.account.LoginFragment;
+import com.zx.app.ztalker.fragments.account.RegisterFragment;
 import com.zx.app.ztalker.fragments.assist.PermissionsFragment;
 import com.zx.app.ztalker.fragments.media.GalleryFragment;
 
@@ -23,32 +26,33 @@ import java.io.File;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static android.app.Activity.RESULT_OK;
+public class UserActivity extends BaseActivity {
 
-/**
- * author Afton
- * date 2020/2/10
- */
-public class AccountFragment extends BaseFragment {
-
-    private static final String TAG = AccountFragment.class.getName();
+    public static final String TAG = UserActivity.class.getName();
 
     @BindView(R.id.pv_portrait)
     PortraitView mPortrait;
 
+
+    private Fragment mCurFragment;
+
     @Override
     protected int getContentLayoutId() {
-        return R.layout.fragment_account;
+        return R.layout.activity_user;
     }
 
     @Override
-    protected void initWidget(View root) {
-        super.initWidget(root);
+    protected void initWidget() {
+        super.initWidget();
+        mCurFragment = new LoginFragment();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fl_container, mCurFragment)
+                .commit();
     }
 
     @OnClick(R.id.pv_portrait)
     public void portraitClick() {
-        if (PermissionsFragment.haveAll(getContext(), getChildFragmentManager())) {
+        if (PermissionsFragment.haveAll(this, getSupportFragmentManager())) {
             new GalleryFragment()
                     .setListener(path -> {
                         UCrop.Options options = new UCrop.Options();
@@ -64,14 +68,15 @@ public class AccountFragment extends BaseFragment {
                                 .withAspectRatio(1, 1)//宽高比
                                 .withMaxResultSize(520, 520)//最大尺寸
                                 .withOptions(options)//相关参数
-                                .start(getActivity());
+                                .start(this);
                     })
-                    .show(getChildFragmentManager(), AccountFragment.class.getName());
+                    .show(getSupportFragmentManager(), LoginFragment.class.getName());
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             final Uri resultUri = UCrop.getOutput(data);
             if (null != resultUri) {
@@ -88,7 +93,7 @@ public class AccountFragment extends BaseFragment {
      * @param portrait
      */
     private void loadPortrait(Uri portrait) {
-        Glide.with(getContext())
+        Glide.with(this)
                 .load(portrait)
                 .centerCrop()
                 .into(mPortrait);
