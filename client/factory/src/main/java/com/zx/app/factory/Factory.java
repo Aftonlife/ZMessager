@@ -49,6 +49,15 @@ public class Factory {
     }
 
     /**
+     * 返回全局Application
+     *
+     * @return
+     */
+    public static Application app() {
+        return Application.getInstance();
+    }
+
+    /**
      * 得到Gson
      *
      * @return
@@ -130,7 +139,8 @@ public class Factory {
     /**
      * 收到账户退出的消息需要进行账户退出重新登录
      */
-    private void logout(){
+    private void logout() {
 
     }
+
 }

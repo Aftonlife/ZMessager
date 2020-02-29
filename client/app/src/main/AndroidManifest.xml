@@ -17,6 +17,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver android:name=".MessageReceiver">
+            <intent-filter>
+                <action android:name=""/>
+            </intent-filter>
+        </receiver>
+
         <activity android:name=".activities.UserActivity"></activity>
         <activity
             android:name=".LaunchActivity"

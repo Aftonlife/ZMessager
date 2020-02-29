@@ -10,6 +10,7 @@ import com.zx.app.factory.model.api.account.RegisterModel;
 import com.zx.app.factory.model.db.User;
 import com.zx.app.factory.net.NetWork;
 import com.zx.app.factory.net.RemoteService;
+import com.zx.app.factory.persistent.Account;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,6 +45,7 @@ public class AccountHelper {
 
         call.enqueue(new AccountRspCallback(callback));
     }
+
     /**
      * 请求的回调部分封装
      */
@@ -63,6 +65,9 @@ public class AccountHelper {
                 /*拿到实体*/
                 AccountRspModel accountRspModel = rspModel.getResult();
                 User user = accountRspModel.getUser();
+
+                /*保存到持久化Xml中*/
+                Account.login(accountRspModel);
                 if (null != callback) {
                     callback.onDataLoaded(user);
                 }
