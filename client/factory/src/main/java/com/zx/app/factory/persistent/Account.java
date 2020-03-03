@@ -9,6 +9,7 @@ import com.zx.app.Common;
 import com.zx.app.factory.Factory;
 import com.zx.app.factory.model.api.account.AccountRspModel;
 import com.zx.app.factory.model.db.User;
+import com.zx.app.factory.model.db.User_Table;
 
 /**
  * author Afton
@@ -23,7 +24,7 @@ public class Account {
     private static final String KEY_ACCOUNT = "KEY_ACCOUNT";
 
     /*设备推送Id*/
-    private static String pushId="test";
+    private static String pushId = "test";
     /*是否绑定服务器*/
     private static boolean isBind;
     /*token用于接口请求*/
@@ -88,6 +89,12 @@ public class Account {
         return Account.isBind;
     }
 
+    /*设置绑定状态*/
+    public static void setBind(boolean isBind) {
+        Account.isBind = isBind;
+        Account.save(Factory.app());
+    }
+
     /*是否完善用户信息*/
     public static boolean isComplete() {
         /*首先确保登录成功*/
@@ -98,8 +105,11 @@ public class Account {
 
     /*获取当前登录的用户信息*/
     public static User getUser() {
-        /*todo 如果为null返回一个new User，其次从数据库查询*/
-        return new User();
+        /*如果userId为null返回一个new User，其次从数据库查询*/
+        return TextUtils.isEmpty(userId) ? new User() : SQLite.select()
+                .from(User.class)
+                .where(User_Table.id.eq(userId))
+                .querySingle();
     }
 
     /*获取当前登录的Token*/

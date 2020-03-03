@@ -16,12 +16,27 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <receiver android:name=".MessageReceiver">
-            <intent-filter>
-                <action android:name=""/>
-            </intent-filter>
-        </receiver>
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+
+        <!-- 个推的Service服务,维持长链接接收消息，process 名字不可更改 -->
+        <service
+            android:name=".AppPushService"
+            android:enabled="true"
+            android:exported="true"
+            android:label=".AppPushService"
+            android:permission="1000"
+            android:process=":pushservice">
+
+        </service>
+        <!-- 个推的消息送达服务，用以接收AppPushService处理后的有效消息接收，类似于之前的广播 -->
+        <service
+            android:name=".AppMessageReceiverService"
+            android:enabled="true"
+            android:exported="true"
+            android:label=".AppMessageReceiverService"
+            android:permission="1000" />
+
 
         <activity android:name=".activities.UserActivity"></activity>
         <activity

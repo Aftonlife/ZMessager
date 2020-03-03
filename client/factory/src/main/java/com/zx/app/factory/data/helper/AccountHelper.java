@@ -1,5 +1,8 @@
 package com.zx.app.factory.data.helper;
 
+import android.text.TextUtils;
+
+import com.raizlabs.android.dbflow.config.FlowManager;
 import com.zx.app.factory.Factory;
 import com.zx.app.factory.R;
 import com.zx.app.factory.data.DataSource;
@@ -37,12 +40,32 @@ public class AccountHelper {
         call.enqueue(new AccountRspCallback(callback));
     }
 
+    /**
+     * 登录
+     *
+     * @param model
+     * @param callback
+     */
     public static void login(LoginModel model, DataSource.Callback<User> callback) {
         /*调用Retrofit对我们的网络请求接口做代理*/
         RemoteService service = NetWork.remote();
 
         Call<RspModel<AccountRspModel>> call = service.accountLogin(model);
 
+        call.enqueue(new AccountRspCallback(callback));
+    }
+
+    /**
+     * 绑定消息推送id
+     */
+    public static void bindPushId(final DataSource.Callback<User> callback) {
+        /*检查是否为空*/
+        String pushId = Account.getPushId();
+        if (TextUtils.isEmpty(pushId)) {
+            return;
+        }
+        RemoteService service = NetWork.remote();
+        Call<RspModel<AccountRspModel>> call = service.accountBind(pushId);
         call.enqueue(new AccountRspCallback(callback));
     }
 
@@ -65,12 +88,23 @@ public class AccountHelper {
                 /*拿到实体*/
                 AccountRspModel accountRspModel = rspModel.getResult();
                 User user = accountRspModel.getUser();
+                /*保存到数据库*/
+                user.save();
 
                 /*保存到持久化Xml中*/
                 Account.login(accountRspModel);
-                if (null != callback) {
-                    callback.onDataLoaded(user);
+                /*判断绑定状态，是否绑定设备*/
+                if (accountRspModel.isBind()) {
+                    /*设置绑定状态*/
+                    Account.setBind(true);
+                    if (null != callback) {
+                        callback.onDataLoaded(user);
+                    }
+                } else {
+                    /*进行绑定唤起*/
+                    bindPushId(callback);
                 }
+
             } else {
                 /*错误解析*/
                 Factory.decodeRspModel(rspModel, callback);

@@ -9,6 +9,7 @@ import com.zx.app.factory.model.db.User;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 /**
  * author Afton
@@ -17,9 +18,29 @@ import retrofit2.http.POST;
  */
 public interface RemoteService {
 
+    /**
+     * 注册
+     * @param model
+     * @return
+     */
     @POST("account/register")
     Call<RspModel<AccountRspModel>> accountRegister(@Body RegisterModel model);
 
+    /**
+     * 登录
+     * @param model
+     * @return
+     */
     @POST("account/login")
     Call<RspModel<AccountRspModel>> accountLogin(@Body LoginModel model);
+
+    /**
+     * 绑定设备Id
+     * @param pushId
+     * @return
+     */
+    @POST("account/bind/{pushId}")
+    Call<RspModel<AccountRspModel>> accountBind(@Path(encoded = true, value = "pushId") String pushId);
+
+
 }

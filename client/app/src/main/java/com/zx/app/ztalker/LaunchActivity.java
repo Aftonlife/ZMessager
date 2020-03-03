@@ -68,7 +68,7 @@ public class LaunchActivity extends BaseActivity {
         }
     }
 
-    /*等待获取pushId*/
+    /*等待个推框架通过广播给pushId赋值*/
     private void waitReceivePushId() {
         if (Account.isLogin()) {
             /*已登录判断是否绑定*/
