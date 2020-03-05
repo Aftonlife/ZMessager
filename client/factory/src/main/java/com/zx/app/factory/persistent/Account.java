@@ -99,6 +99,11 @@ public class Account {
     public static boolean isComplete() {
         /*首先确保登录成功*/
         if (isLogin()) {
+            User self = getUser();
+            return !TextUtils.isEmpty(self.getDesc())
+                    && !TextUtils.isEmpty(self.getPortrait())
+                    && !TextUtils.isEmpty(self.getPortrait())
+                    && self.getSex() != 0;
         }
         return false;
     }

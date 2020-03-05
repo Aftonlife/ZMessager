@@ -38,7 +38,8 @@
             android:permission="1000" />
 
 
-        <activity android:name=".activities.UserActivity"></activity>
+        <activity android:name=".activities.UserActivity"
+            android:theme="@style/AppTheme.Main"/>
         <activity
             android:name=".LaunchActivity"
             android:theme="@style/AppTheme.TransStatusBar">
@@ -52,7 +53,7 @@
             android:name=".activities.AccountActivity"
             android:theme="@style/AppTheme.Main" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:theme="@style/AppTheme.Main"></activity>
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"

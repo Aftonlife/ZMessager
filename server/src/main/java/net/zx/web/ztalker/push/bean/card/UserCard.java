@@ -24,7 +24,7 @@ public class UserCard {
     @Expose
     private String portrait;
     @Expose
-    private String description;
+    private String desc;
     @Expose
     private int sex = 0;
     /*用户最后的更新时间*/
@@ -51,7 +51,7 @@ public class UserCard {
         this.name = user.getName();
         this.phone = user.getPhone();
         this.portrait = user.getPortrait();
-        this.description = user.getDescription();
+        this.desc = user.getDescription();
         this.sex = user.getSex();
         this.modifyAt = user.getUpdateAt();
 
@@ -101,12 +101,20 @@ public class UserCard {
         this.portrait = portrait;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public int getFollows() {
+        return follows;
+    }
+
+    public void setFollows(int follows) {
+        this.follows = follows;
     }
 
     public int getSex() {

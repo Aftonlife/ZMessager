@@ -1,16 +1,11 @@
 package com.zx.app.ztalker;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Property;
 import android.view.View;
@@ -18,12 +13,11 @@ import android.view.View;
 import com.zx.app.common.app.BaseActivity;
 import com.zx.app.factory.persistent.Account;
 import com.zx.app.ztalker.activities.AccountActivity;
+import com.zx.app.ztalker.activities.MainActivity;
 import com.zx.app.ztalker.fragments.assist.PermissionsFragment;
 
 import net.qiujuer.genius.res.Resource;
 import net.qiujuer.genius.ui.compat.UiCompat;
-
-import pub.devrel.easypermissions.EasyPermissions;
 
 public class LaunchActivity extends BaseActivity {
 

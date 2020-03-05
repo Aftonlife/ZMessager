@@ -1,14 +1,16 @@
 package com.zx.app.factory.net;
 
+import com.zx.app.factory.model.card.UserCard;
 import com.zx.app.factory.model.api.RspModel;
 import com.zx.app.factory.model.api.account.AccountRspModel;
 import com.zx.app.factory.model.api.account.LoginModel;
 import com.zx.app.factory.model.api.account.RegisterModel;
-import com.zx.app.factory.model.db.User;
+import com.zx.app.factory.model.api.user.UserUpdateModel;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 /**
@@ -20,6 +22,7 @@ public interface RemoteService {
 
     /**
      * 注册
+     *
      * @param model
      * @return
      */
@@ -28,6 +31,7 @@ public interface RemoteService {
 
     /**
      * 登录
+     *
      * @param model
      * @return
      */
@@ -36,11 +40,19 @@ public interface RemoteService {
 
     /**
      * 绑定设备Id
+     *
      * @param pushId
      * @return
      */
     @POST("account/bind/{pushId}")
     Call<RspModel<AccountRspModel>> accountBind(@Path(encoded = true, value = "pushId") String pushId);
 
-
+    /**
+     * 用户信息更新
+     *
+     * @param model
+     * @return
+     */
+    @PUT("user")
+    Call<RspModel<UserCard>> updateInfo(@Body UserUpdateModel model);
 }

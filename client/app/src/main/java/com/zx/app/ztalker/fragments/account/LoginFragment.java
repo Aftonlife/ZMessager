@@ -1,39 +1,22 @@
 package com.zx.app.ztalker.fragments.account;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 
-import com.bumptech.glide.Glide;
-import com.yalantis.ucrop.UCrop;
-import com.zx.app.common.app.Application;
-import com.zx.app.common.app.BaseFragment;
 import com.zx.app.common.app.PresenterFragment;
-import com.zx.app.common.widget.PortraitView;
-import com.zx.app.factory.Factory;
-import com.zx.app.factory.net.UploadHelper;
 import com.zx.app.factory.presenter.account.LoginContract;
 import com.zx.app.factory.presenter.account.LoginPresenter;
-import com.zx.app.ztalker.MainActivity;
+import com.zx.app.ztalker.activities.MainActivity;
 import com.zx.app.ztalker.R;
-import com.zx.app.ztalker.fragments.assist.PermissionsFragment;
-import com.zx.app.ztalker.fragments.media.GalleryFragment;
 
 import net.qiujuer.genius.ui.widget.Button;
 import net.qiujuer.genius.ui.widget.Loading;
 
-import java.io.File;
-
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * author Afton

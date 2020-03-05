@@ -1,14 +1,12 @@
-package com.zx.app.ztalker;
+package com.zx.app.ztalker.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnticipateOvershootInterpolator;
@@ -19,9 +17,9 @@ import com.bumptech.glide.request.target.CustomViewTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.zx.app.common.app.BaseActivity;
-import com.zx.app.common.app.BaseFragment;
 import com.zx.app.common.widget.PortraitView;
-import com.zx.app.ztalker.activities.AccountActivity;
+import com.zx.app.factory.persistent.Account;
+import com.zx.app.ztalker.R;
 import com.zx.app.ztalker.fragments.main.ActiveFragment;
 import com.zx.app.ztalker.fragments.main.ContactFragment;
 import com.zx.app.ztalker.fragments.main.GroupFragment;
@@ -56,6 +54,19 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
+    protected Boolean initArgs(Bundle bundle) {
+        if (Account.isComplete()) {
+            /*信息完整正常走流程*/
+            return super.initArgs(bundle);
+        } else {
+            /*信息不完整，跳转UserActivity*/
+            UserActivity.show(this);
+            return false;
+        }
+
+    }
+
+    @Override
     protected int getContentLayoutId() {
         return R.layout.activity_main;
     }
@@ -85,6 +96,11 @@ public class MainActivity extends BaseActivity implements
                     }
                 });
         mBottomNavigation.setOnNavigationItemSelectedListener(this);
+        /*加载头像*/
+        Glide.with(this)
+                .load(Account.getUser().getPortrait())
+                .centerCrop()
+                .into(mPortrait);
         mNavHelper = new NavHelper(this, getSupportFragmentManager(), R.id.fl_container, this);
         /*添加Fragment,加类*/
         mNavHelper.add(R.id.action_home, new NavHelper.Tab<>(ActiveFragment.class, R.string.title_home))

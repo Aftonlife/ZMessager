@@ -17,7 +17,7 @@ import java.util.Objects;
 public class User extends BaseModel {
 
     public static final int SEX_MAN = 1;
-    public static final int SEX_WOMAN = 1;
+    public static final int SEX_WOMAN = 2;
 
     /*主键*/
     @PrimaryKey

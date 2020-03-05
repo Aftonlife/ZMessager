@@ -2,25 +2,20 @@ package com.zx.app.ztalker.fragments.account;
 
 
 import android.content.Context;
-import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.zx.app.common.app.BaseFragment;
 import com.zx.app.common.app.PresenterFragment;
-import com.zx.app.factory.presenter.BaseContract;
 import com.zx.app.factory.presenter.account.RegisterContract;
 import com.zx.app.factory.presenter.account.RegisterPresenter;
-import com.zx.app.ztalker.MainActivity;
+import com.zx.app.ztalker.activities.MainActivity;
 import com.zx.app.ztalker.R;
 
 import net.qiujuer.genius.ui.widget.Button;
