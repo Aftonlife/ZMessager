@@ -2,7 +2,6 @@ package com.zx.app.factory.presenter.user;
 
 import android.text.TextUtils;
 
-import com.zx.app.common.app.Application;
 import com.zx.app.factory.Factory;
 import com.zx.app.factory.R;
 import com.zx.app.factory.data.DataSource;
@@ -46,6 +45,7 @@ public class UpdateInfoPresenter extends BasePresenter<UpdateInfoContract.View>
                                 view.showError(R.string.data_upload_error);
                             }
                         });
+
                     } else {
                         UserUpdateModel model = new UserUpdateModel("", netPath, desc,
                                 isMan ? User.SEX_MAN : User.SEX_WOMAN);

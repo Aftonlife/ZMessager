@@ -1,14 +1,15 @@
 package net.zx.web.ztalker.push.factory;
 
-
 import com.google.common.base.Strings;
 import net.zx.web.ztalker.push.bean.db.User;
+import net.zx.web.ztalker.push.bean.db.UserFollow;
 import net.zx.web.ztalker.push.utils.Hib;
 import net.zx.web.ztalker.push.utils.TextUtil;
-import org.hibernate.Session;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @author Administrator
@@ -58,9 +59,9 @@ public class UserFactory {
     /**
      * 绑定pushId
      *
-     * @param user
-     * @param pushId
-     * @return
+     * @param user   用户
+     * @param pushId 设备Id
+     * @return User
      */
     public static User bindPushId(User user, String pushId) {
         if (Strings.isNullOrEmpty(pushId)) {
@@ -68,6 +69,7 @@ public class UserFactory {
         }
         /*查询绑定了该pushId的用户（除了自己）清空pushId 防止推送混乱*/
         Hib.queryOnly(session -> {
+            @SuppressWarnings("unchecked")
             List<User> list = (List<User>) session.createQuery("from User where pushId=:pushId and id!=:userId")
                     .setParameter("pushId", pushId)
                     .setParameter("userId", user.getId())
@@ -90,9 +92,9 @@ public class UserFactory {
     /**
      * 账号密码登录
      *
-     * @param account
-     * @param password
-     * @return
+     * @param account  手机号
+     * @param password 密码
+     * @return 用户
      */
     public static User login(String account, String password) {
         final String accountStr = account.trim();
@@ -114,9 +116,9 @@ public class UserFactory {
      * 用户注册
      * 注册的操作写入数据库，并返回数据库中的User信息
      *
-     * @param account
-     * @param password
-     * @param name
+     * @param account  手机号
+     * @param password 密码
+     * @param name     用户名
      */
     public static User register(String account, String password, String name) {
         account = account.trim();
@@ -131,12 +133,12 @@ public class UserFactory {
     /**
      * 注册部分的新建用户逻辑
      *
-     * @param account
-     * @param password
-     * @param name
-     * @return
+     * @param account  手机号
+     * @param password 密码
+     * @param name     用户名
+     * @return 用户
      */
-    public static User createUser(String account, String password, String name) {
+    private static User createUser(String account, String password, String name) {
         User user = new User();
         user.setPhone(account);
         user.setPassword(password);
@@ -151,8 +153,8 @@ public class UserFactory {
      * 把一个User进行登录操作
      * 本质上是对Token进行操作
      *
-     * @param user
-     * @return
+     * @param user 用户信息
+     * @return 登录后的信息，token
      */
     private static User login(User user) {
         // 使用一个随机的UUID值充当Token
@@ -166,8 +168,8 @@ public class UserFactory {
     /**
      * 密码加密
      *
-     * @param password
-     * @return
+     * @param password 原文
+     * @return 密码
      */
     private static String encodePassword(String password) {
         // 密码去除首位空格
@@ -176,5 +178,108 @@ public class UserFactory {
         password = TextUtil.getMD5(password);
         // 再进行一次对称的Base64加密，当然可以采取加盐的方案
         return TextUtil.encodeBase64(password);
+    }
+
+    /**
+     * 获取我的联系人
+     *
+     * @param self 自己
+     * @return 我的联系人列表
+     */
+    public static List<User> contacts(User self) {
+        return Hib.query(session -> {
+            /*重新加载一次用户信息到self中，和当前的session绑定*/
+            session.load(self, self.getId());
+            /*获取我关注的人*/
+            Set<UserFollow> flows = self.getFollowing();
+            /*转换*/
+            return flows.stream()
+                    .map(UserFollow::getTarget)
+                    .collect(Collectors.toList());
+        });
+    }
+
+
+    /**
+     * 关注人的操作（类似添加好友）
+     *
+     * @param origin 发起者
+     * @param target 被关注的人
+     * @param alias  别名
+     * @return 被关注人的信息
+     */
+    public static User follow(User origin, User target, String alias) {
+        UserFollow userFollow = getUserFollow(origin, target);
+        if (null != userFollow) {
+            /*已关注（已添加为好友）直接返回*/
+            return userFollow.getTarget();
+        }
+        return Hib.query(session -> {
+            /*想要操作懒加载数据，需要重新load一次*/
+            session.load(origin, origin.getId());
+            session.load(target, target.getId());
+
+            /*我关注的人也会关注我，加两条数据（类似我添加别人好友，别人同意了我也就是他的好友，避免两个人都要添加）*/
+            UserFollow originFollow = new UserFollow();
+            originFollow.setOrigin(origin);
+            originFollow.setTarget(target);
+            /*默认发起者可以添加备注名，接收者不可以*/
+            originFollow.setAlias(alias);
+
+            /*发起者是他，我是被关注的人的记录*/
+            UserFollow targetFollow = new UserFollow();
+            targetFollow.setOrigin(target);
+            targetFollow.setTarget(origin);
+
+            /*保持到数据库*/
+            session.save(originFollow);
+            session.save(targetFollow);
+
+            return target;
+        });
+    }
+
+    /**
+     * 查询两人是否已关注（类似是否添加了好友）
+     *
+     * @param origin 发起者
+     * @param target 被关注的人
+     * @return 中间类UserFollow
+     */
+    public static UserFollow getUserFollow(User origin, User target) {
+        return Hib.query(session -> (UserFollow) session
+                .createQuery("from UserFollow where originId=:originId and targetId=:targetId")
+                .setParameter("originId", origin.getId())
+                .setParameter("targetId", target.getId())
+                .setMaxResults(1)
+                .uniqueResult()
+        );
+    }
+
+    /**
+     * 根据用户名搜索
+     *
+     * @param name 查询的name，允许为空
+     * @return 查询到的用户集合，如果name为空，则返回最近的用户
+     */
+    @SuppressWarnings("unchecked")
+    public static List<User> search(String name) {
+        if (Strings.isNullOrEmpty(name)) {
+            /*防止name==null*/
+            name = "";
+        }
+        /*模糊匹配*/
+        final String searchName = "%" + name + "%";
+
+        return Hib.query(session -> {
+            // 查询的条件：name忽略大小写，并且使用like（模糊）查询；
+            // 头像和描述必须完善才能查询到
+            return (List<User>) session.createQuery(
+                    "from User where lower(name) like :name and portrait is not null and description is not null")
+                    .setParameter("name", searchName)
+                    .setMaxResults(20)//最多20条
+                    .list();
+
+        });
     }
 }
