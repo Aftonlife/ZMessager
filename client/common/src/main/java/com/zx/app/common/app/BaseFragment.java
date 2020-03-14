@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.zx.app.common.widget.convention.PlaceHolderView;
 import com.zx.app.factory.presenter.BaseContract;
 
 import butterknife.ButterKnife;
@@ -21,7 +22,8 @@ import butterknife.Unbinder;
  */
 public abstract class BaseFragment extends Fragment {
     protected View mRoot;
-    protected Unbinder mRootUnbinder;
+    protected Unbinder mRootUnBinder;
+    protected PlaceHolderView mPlaceHolderView;
 
     /*标示是否第一次初始化数据*/
     protected boolean mIsFirstInitData = true;
@@ -35,7 +37,6 @@ public abstract class BaseFragment extends Fragment {
             View root = inflater.inflate(layId, container, false);
             initWidget(root);
             mRoot = root;
-            initData();
         } else {
             if (null != mRoot.getParent()) {
                 /*把当前Root从其父控件中移除*/
@@ -82,11 +83,12 @@ public abstract class BaseFragment extends Fragment {
      * 初始化控件
      */
     protected void initWidget(View root) {
-        mRootUnbinder = ButterKnife.bind(this, root);
+        mRootUnBinder = ButterKnife.bind(this, root);
     }
 
+
     /**
-     * 初始化控件
+     * 初始化数据
      */
     protected void initData() {
     }
@@ -106,6 +108,15 @@ public abstract class BaseFragment extends Fragment {
      */
     public boolean onBackPressed() {
         return false;
+    }
+
+    /**
+     * 设置占位布局
+     *
+     * @param placeHolderView 继承了占位布局规范的View
+     */
+    public void setPlaceHolderView(PlaceHolderView placeHolderView) {
+        this.mPlaceHolderView = placeHolderView;
     }
 
 }

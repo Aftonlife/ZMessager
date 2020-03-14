@@ -24,7 +24,7 @@ public class Account {
     private static final String KEY_ACCOUNT = "KEY_ACCOUNT";
 
     /*设备推送Id*/
-    private static String pushId = "test";
+    private static String pushId;
     /*是否绑定服务器*/
     private static boolean isBind;
     /*token用于接口请求*/
@@ -61,7 +61,7 @@ public class Account {
     public static void load(Context context) {
         SharedPreferences sp = context.getSharedPreferences(Account.class.getName(),
                 Context.MODE_PRIVATE);
-        pushId = sp.getString(KEY_PUSH_ID, "");
+        pushId = sp.getString(KEY_PUSH_ID, "1c13eeba336d2067750c1f603f5fb7e1");
         isBind = sp.getBoolean(KEY_IS_BIND, false);
         token = sp.getString(KEY_TOKEN, "");
         userId = sp.getString(KEY_USER_ID, "");
@@ -102,7 +102,6 @@ public class Account {
             User self = getUser();
             return !TextUtils.isEmpty(self.getDesc())
                     && !TextUtils.isEmpty(self.getPortrait())
-                    && !TextUtils.isEmpty(self.getPortrait())
                     && self.getSex() != 0;
         }
         return false;
@@ -115,6 +114,11 @@ public class Account {
                 .from(User.class)
                 .where(User_Table.id.eq(userId))
                 .querySingle();
+    }
+
+    /*获取UserId*/
+    public static String getUserId() {
+        return userId;
     }
 
     /*获取当前登录的Token*/

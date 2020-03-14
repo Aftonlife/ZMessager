@@ -3,4 +3,13 @@
     <attr name="toolbarTitleColor" format="color" />
     <attr name="toolbarMenuIconColor" format="color" />
     <attr name="toolbarTitleSize" format="dimension" />
+
+    <!--EmptyView-->
+    <declare-styleable name="EmptyView">
+        <attr name="comEmptyText" format="integer" />
+        <attr name="comErrorText" format="integer" />
+        <attr name="comLoadingText" format="integer" />
+        <attr name="comEmptyDrawable" format="integer" />
+        <attr name="comErrorDrawable" format="integer" />
+    </declare-styleable>
 </resources>

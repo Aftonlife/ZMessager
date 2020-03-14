@@ -2,7 +2,10 @@ package com.zx.app.factory.data.helper;
 
 import android.text.TextUtils;
 
+import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
+import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
+import com.raizlabs.android.dbflow.structure.database.transaction.ITransaction;
 import com.zx.app.factory.Factory;
 import com.zx.app.factory.R;
 import com.zx.app.factory.data.DataSource;
@@ -10,6 +13,7 @@ import com.zx.app.factory.model.api.RspModel;
 import com.zx.app.factory.model.api.account.AccountRspModel;
 import com.zx.app.factory.model.api.account.LoginModel;
 import com.zx.app.factory.model.api.account.RegisterModel;
+import com.zx.app.factory.model.db.AppDatabase;
 import com.zx.app.factory.model.db.User;
 import com.zx.app.factory.net.NetWork;
 import com.zx.app.factory.net.RemoteService;
@@ -89,7 +93,20 @@ public class AccountHelper {
                 AccountRspModel accountRspModel = rspModel.getResult();
                 User user = accountRspModel.getUser();
                 /*保存到数据库*/
-                user.save();
+                //第一种，直接保持
+//                user.save();
+                //第二种通过ModelAdapter
+                /*FlowManager.getModelAdapter(User.class)
+                        .save(user);
+                //第三种事务中
+                DatabaseDefinition definition = FlowManager.getDatabase(AppDatabase.class);
+                definition.beginTransactionAsync(new ITransaction() {
+                    @Override
+                    public void execute(DatabaseWrapper databaseWrapper) {
+                        FlowManager.getModelAdapter(User.class)
+                                .save(user);
+                    }
+                }).build().execute();*/
 
                 /*保存到持久化Xml中*/
                 Account.login(accountRspModel);

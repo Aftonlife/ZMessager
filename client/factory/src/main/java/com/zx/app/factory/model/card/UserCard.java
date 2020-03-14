@@ -1,5 +1,6 @@
 package com.zx.app.factory.model.card;
 
+import com.zx.app.factory.model.Author;
 import com.zx.app.factory.model.db.User;
 
 import java.sql.Date;
@@ -10,7 +11,7 @@ import java.sql.Date;
  * date 2020/3/5
  * 用户卡片，用于接收服务器数据
  */
-public class UserCard {
+public class UserCard implements Author {
     private String id;
     private String name;
     private String phone;

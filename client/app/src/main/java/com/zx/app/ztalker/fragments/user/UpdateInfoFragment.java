@@ -55,7 +55,7 @@ public class UpdateInfoFragment extends PresenterFragment<UpdateInfoContract.Pre
     Loading mLoading;
 
     private String mPortraitPath;
-    private boolean isMan=true,isLoading;
+    private boolean isMan = true, isLoading;
 
     public UpdateInfoFragment() {
 
@@ -70,7 +70,6 @@ public class UpdateInfoFragment extends PresenterFragment<UpdateInfoContract.Pre
     protected UpdateInfoContract.Presenter initPresenter() {
         return new UpdateInfoPresenter(this);
     }
-
 
 
     @OnClick(R.id.btn_submit)
@@ -131,16 +130,11 @@ public class UpdateInfoFragment extends PresenterFragment<UpdateInfoContract.Pre
      * @param portrait
      */
     private void loadPortrait(Uri portrait) {
-
+        mPortraitPath = portrait.getPath();
         Glide.with(this)
                 .load(portrait)
                 .centerCrop()
                 .into(mPortrait);
-        String localPath = portrait.getPath();
-        mPortraitPath = localPath;
-        Factory.runOnAsync(() -> {
-            String netPath = UploadHelper.uploadPortrait(localPath);
-        });
     }
 
     @Override
@@ -149,6 +143,7 @@ public class UpdateInfoFragment extends PresenterFragment<UpdateInfoContract.Pre
         MainActivity.show(getContext());
         getActivity().finish();
     }
+
     @Override
     public void showError(int str) {
         super.showError(str);

@@ -25,6 +25,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             /*界面Id设置到Activity界面*/
             int layId = getContentLayoutId();
             setContentView(layId);
+            initBefore();
             initWidget();
             initData();
         } else {
@@ -36,14 +37,12 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 初始化之前
      */
     protected void initBefore() {
-
     }
 
     /**
      * 初始化窗口
      */
     protected void initWindows() {
-
     }
 
     /**

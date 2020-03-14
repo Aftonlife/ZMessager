@@ -18,18 +18,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
-        <!-- 个推的Service服务,维持长链接接收消息，process 名字不可更改 -->
+        <activity android:name=".activities.PersonalActivity"></activity>
+        <activity android:name=".activities.MessageActivity" /> <!-- 个推的Service服务,维持长链接接收消息，process 名字不可更改 -->
         <service
             android:name=".AppPushService"
             android:enabled="true"
             android:exported="true"
             android:label=".AppPushService"
             android:permission="1000"
-            android:process=":pushservice">
-
-        </service>
-        <!-- 个推的消息送达服务，用以接收AppPushService处理后的有效消息接收，类似于之前的广播 -->
+            android:process=":pushservice" /> <!-- 个推的消息送达服务，用以接收AppPushService处理后的有效消息接收，类似于之前的广播 -->
         <service
             android:name=".AppMessageReceiverService"
             android:enabled="true"
@@ -37,9 +34,9 @@
             android:label=".AppMessageReceiverService"
             android:permission="1000" />
 
-
-        <activity android:name=".activities.UserActivity"
-            android:theme="@style/AppTheme.Main"/>
+        <activity
+            android:name=".activities.UserActivity"
+            android:theme="@style/AppTheme.Main" />
         <activity
             android:name=".LaunchActivity"
             android:theme="@style/AppTheme.TransStatusBar">
@@ -54,11 +51,15 @@
             android:theme="@style/AppTheme.Main" />
         <activity
             android:name=".activities.MainActivity"
-            android:theme="@style/AppTheme.Main"></activity>
+            android:theme="@style/AppTheme.Main" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".activities.SearchActivity"
+            android:label="@string/title_search"
+            android:theme="@style/AppTheme.TransStatusBar" />
     </application>
 
 </manifest>

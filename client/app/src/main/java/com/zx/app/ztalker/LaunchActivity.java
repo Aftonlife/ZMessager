@@ -117,7 +117,7 @@ public class LaunchActivity extends BaseActivity {
         /*构建属性动画*/
         ValueAnimator valueAnimator = ObjectAnimator.ofObject(this, property, evaluator, endColor);
         /*设置时间*/
-        valueAnimator.setDuration(1500);
+        valueAnimator.setDuration(1000);
         /*开始&结束值*/
         valueAnimator.setIntValues(mBgDrawable.getColor(), endColor);
         valueAnimator.addListener(new AnimatorListenerAdapter() {

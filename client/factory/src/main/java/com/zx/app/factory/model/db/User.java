@@ -4,6 +4,8 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+import com.zx.app.factory.model.Author;
+import com.zx.app.factory.utils.DiffUiDataCallback;
 
 import java.sql.Date;
 import java.util.Objects;
@@ -14,7 +16,7 @@ import java.util.Objects;
  * 用户表
  */
 @Table(database = AppDatabase.class)
-public class User extends BaseModel {
+public class User extends BaseDbModel<User> implements Author {
 
     public static final int SEX_MAN = 1;
     public static final int SEX_WOMAN = 2;
@@ -163,4 +165,20 @@ public class User extends BaseModel {
     }
 
 
+    @Override
+    public boolean isSame(User old) {
+        /*只比较id*/
+        return this == old || Objects.equals(id, old.id);
+    }
+
+    @Override
+    public boolean isUiContentSame(User old) {
+        /*显示的内容主要判断：名字，头像，性别，是否已经关注*/
+        return this == old || (
+                Objects.equals(name, old.name)
+                        && Objects.equals(portrait, old.portrait)
+                        && Objects.equals(sex, old.sex)
+                        && Objects.equals(isFollow, old.isFollow)
+        );
+    }
 }

@@ -101,6 +101,7 @@ public class MainActivity extends BaseActivity implements
                 .load(Account.getUser().getPortrait())
                 .centerCrop()
                 .into(mPortrait);
+
         mNavHelper = new NavHelper(this, getSupportFragmentManager(), R.id.fl_container, this);
         /*添加Fragment,加类*/
         mNavHelper.add(R.id.action_home, new NavHelper.Tab<>(ActiveFragment.class, R.string.title_home))
@@ -147,5 +148,14 @@ public class MainActivity extends BaseActivity implements
     @OnClick(R.id.fab_action)
     public void actionClick(View view) {
         AccountActivity.show(this);
+    }
+
+    @OnClick(R.id.iv_search)
+    public void searchClick(View view) {
+        /*群的界面点击进入搜索群的界面，其他进入人的搜索界面*/
+        int type = Objects.equals(mNavHelper.getCurrentTab().extra, R.string.title_group) ?
+                SearchActivity.TYPE_GROUP : SearchActivity.TYPE_USER;
+        SearchActivity.show(this, type);
+
     }
 }

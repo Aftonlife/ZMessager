@@ -10,16 +10,21 @@ import androidx.fragment.app.FragmentTransaction;
 /**
  * author Afton
  * date 2020/2/10
+ * 解决对Fragment的调度与重用问题，
+ * 达到最优的Fragment切换
  */
 public class NavHelper<T> {
 
+    /*所有的Tab集合*/
     private final SparseArray<Tab<T>> tabs = new SparseArray<>();
 
+    /*用于初始化的参数*/
     private final Context context;
     private final FragmentManager fragmentManager;
     private final int containerId;
     private final onTabChangeListener listener;
 
+    /*当前选中的Tab*/
     private Tab<T> currentTab;
 
     public NavHelper(Context context, FragmentManager fragmentManager, int containerId, onTabChangeListener listener) {
@@ -31,10 +36,8 @@ public class NavHelper<T> {
 
     /**
      * 添加Tab menuId为唯一标识
-     *
-     * @param menuId
-     * @param newTab
-     * @return
+     * @param menuId Tab对应的菜单Id
+     * @param newTab tab
      */
     public NavHelper<T> add(int menuId, Tab<T> newTab) {
         tabs.put(menuId, newTab);
@@ -44,7 +47,7 @@ public class NavHelper<T> {
     /**
      * 获取当前Tab
      *
-     * @return
+     * @return 当前Tab
      */
     public Tab<T> getCurrentTab() {
         return currentTab;
@@ -53,8 +56,8 @@ public class NavHelper<T> {
     /**
      * Menu被点击
      *
-     * @param itemId
-     * @return
+     * @param itemId 菜单Id
+     * @return 是否能处理这个Tab
      */
     public boolean performClickMenu(int itemId) {
         Tab<T> tab = tabs.get(itemId);
@@ -68,7 +71,7 @@ public class NavHelper<T> {
     /**
      * 选中Tab事件
      *
-     * @param tab
+     * @param tab tab
      */
     private void doSelectTab(Tab<T> tab) {
         Tab<T> oldTab = null;
@@ -90,8 +93,8 @@ public class NavHelper<T> {
      * attach/detach：布局中移除，但是存储到缓存列表中，不会被测量，但可以重用
      * fragmentManager.getFragmentFactory().instantiate 通过Fragment的类名新建Framgent
      *
-     * @param newTab
-     * @param oldTab
+     * @param newTab 新的
+     * @param oldTab 旧的
      */
     private void doTabChange(Tab<T> newTab, Tab<T> oldTab) {
         FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -113,6 +116,11 @@ public class NavHelper<T> {
         notifyTabSelect(newTab, oldTab);
     }
 
+    /**
+     * 回调我们的监听器
+     * @param newTab 新的
+     * @param oldTab 旧的
+     */
     private void notifyTabSelect(Tab<T> newTab, Tab<T> oldTab) {
         if (null != listener) {
             listener.onTabChange(newTab, oldTab);
@@ -120,7 +128,7 @@ public class NavHelper<T> {
     }
 
     private void notifyTabReselect(Tab<T> tab) {
-
+        // TODO 二次点击Tab所做的操作
     }
 
     /**
@@ -142,9 +150,7 @@ public class NavHelper<T> {
     }
 
     /**
-     * Tab切换回调
-     *
-     * @param <T>
+     * Tab切换回调接口
      */
     public interface onTabChangeListener<T> {
         void onTabChange(Tab<T> newTab, Tab<T> oldTab);
